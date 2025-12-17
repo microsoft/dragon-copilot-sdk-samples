@@ -1,0 +1,91 @@
+:root {
+  --color-svg-disabled: #959595;
+  --color-recording-button-hover: #ebf3fc;
+}
+
+.recording {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-top: 1px solid var(--color-divider);
+  z-index: 1000;
+  width: 100%;
+  padding: 20px 0;
+  gap: 16px;
+}
+
+.recording-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.recording-button {
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: var(--shadow4Brand);
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.recording-button:hover {
+  background-color: var(--color-recording-button-hover);
+}
+
+.recording-button svg {
+  fill: var(--color-primary);
+  width: 32px;
+  height: 32px;
+}
+
+.recording-button.active {
+  background-color: var(--color-primary);
+}
+
+.recording-button.active:hover {
+  background-color: var(--color-primary-selected);
+}
+
+.recording-button.active svg {
+  fill: white;
+}
+
+.recording-button:disabled {
+  background-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.recording-button:disabled svg {
+  fill: var(--color-svg-disabled);
+}
+
+.recording-button-tooltip {
+  position: absolute;
+  top: -26px;
+}
+
+.dictation-processing-spinner {
+  position: absolute;
+  top: 23px;
+  margin-left: -3px;
+}
+
+.dictation-processing-spinner-background {
+  width: 50px !important;
+  height: 50px !important;
+  background: none !important;
+}
+
+.dictation-processing-spinner-tail {
+  color: var(--color-primary);
+}
+
+.recording-button.active .dictation-processing-spinner-tail {
+  color: white;
+}
