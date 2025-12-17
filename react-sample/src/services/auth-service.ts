@@ -4,9 +4,11 @@ import {
   type PopupRequest,
   PublicClientApplication,
 } from "@azure/msal-browser";
-import * as dragon from "dragon-speech-sdk";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../environment";
+
+const dragon = ((window as any).DragonCopilotSDK?.dragon ?? undefined) as unknown as typeof Dragon;
 
 export class AuthService {
   private msalApp: PublicClientApplication;

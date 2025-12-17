@@ -1,8 +1,12 @@
-import * as dragon from "dragon-speech-sdk";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../environment";
 import { AuthService } from "../services/auth-service";
 import { session } from "../session";
+
+
+// Bind the runtime global from the CDN and cast to the typed namespace
+const dragon = ((window as any).DragonCopilotSDK?.dragon ?? undefined) as unknown as typeof Dragon;
 
 export type RecordingMode = "ambient" | "dictation" | null;
 export type AmbientUploadStatus = "uploading" | "uploadCompleted" | "uploadFailed";
@@ -52,7 +56,7 @@ export class DragonService {
 
     // Attach event handlers before initialization as events may be emitted during the initialization process.
     this.#attachEventHandlers();
-
+    
     try {
       await dragon.initialize({
         partnerGuid: environment.dragonConfig.partnerGuid,

@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@azure/msal-react": "^3.0.21",
-    "@fluentui/react-components": "^9.72.7",    
+    "@fluentui/react-components": "^9.72.7",
+    "@microsoft/dragon-copilot-sdk-types": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@microsoft/dragon-copilot-sdk-types" : "latest"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@rsbuild/core": "^1.6.0",

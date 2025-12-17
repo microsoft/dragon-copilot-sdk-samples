@@ -9,5 +9,6 @@ export default defineConfig({
   html: {
     favicon: "./public/dragon-copilot.svg",
     title: "Microsoft Dragon Copilot SDK for Javasript Sample",
+    template: "./public/index.html",
   },
 });

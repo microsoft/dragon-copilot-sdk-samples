@@ -1,10 +1,12 @@
 import { Spinner, Tooltip } from "@fluentui/react-components";
-import * as dragon from "dragon-speech-sdk";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { useEffect, useState } from "react";
 import "../../App.css";
 import { useAuthContext } from "../../context/auth-context";
 import { getDragonService, type RecordingMode } from "../../services/dragon-service";
 import "./Recording.css";
+
+const dragon = ((window as any).DragonCopilotSDK?.dragon ?? undefined) as unknown as typeof Dragon;
 
 /**
  * Component to wrap Dragon Copilot SDK recording controls and recording status.

@@ -1,4 +1,4 @@
-import * as dragon from "dragon-speech-sdk";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { environment } from "./environment";
 
 export const session = {
@@ -39,7 +39,7 @@ export const session = {
     draftAutoCreated: false,
     recordingList: [],
     partnerId: environment.dragonConfig.partnerGuid,
-  } as dragon.recording.ambient.AmbientSessionData,
+  } as Dragon.recording.ambient.AmbientSessionData,
   fields: [
     "History",
     "Allergies",
