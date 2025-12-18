@@ -4,9 +4,8 @@ import { environment } from "../environment";
 import { AuthService } from "../services/auth-service";
 import { session } from "../session";
 
-
 // Bind the runtime global from the CDN and cast to the typed namespace
-const dragon = ((window as any).DragonCopilotSDK?.dragon ?? undefined) as unknown as typeof Dragon;
+export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
 
 export type RecordingMode = "ambient" | "dictation" | null;
 export type AmbientUploadStatus = "uploading" | "uploadCompleted" | "uploadFailed";
