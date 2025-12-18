@@ -68,6 +68,7 @@ export class DragonService {
         },
         authentication: {
           acquireAccessToken: this.#auth.acquireAccessToken.bind(this.#auth),
+          scopeBehavior: "serviceScoped",
         },
         isAmbientEnabled: true,
         isDictationEnabled: true,
