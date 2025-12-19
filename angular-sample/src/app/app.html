@@ -24,12 +24,9 @@
     </div>
     <div class="content">
       <form [formGroup]="form" novalidate>
-        <div id="dynamic-inputs-section" formArrayName="dynamicInputs">
+        <div id="dynamic-inputs-section" formArrayName="dynamicInputs" data-dragon-container>
           @for (ctrl of dynamicInputs().controls; track $index) {
-            <div
-              class="input-section"
-              [attr.data-dragon-container]="inputConfig[$index].containerId"
-            >
+            <div class="input-section">
               <label [attr.for]="inputConfig[$index].labelFor">{{
                 inputConfig[$index].labelText
               }}</label>
