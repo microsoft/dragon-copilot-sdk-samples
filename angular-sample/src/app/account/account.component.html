@@ -1,0 +1,19 @@
+<div id="account-button" class="avatar" (click)="toggleMenu()">
+  {{ initials }}
+</div>
+@if (showMenu) {
+  <fluent-menu class="account-menu">
+    <div class="account-info">
+      <span class="avatar">
+        {{ initials }}
+      </span>
+      <div class="string-info">
+        <span class="lastAndFirst">{{ lastAndFirst }}</span>
+        <span class="username">{{ username }}</span>
+      </div>
+    </div>
+    <fluent-menu-item (click)="triggerSignOut()" [disabled]="disabled">Sign out</fluent-menu-item>
+  </fluent-menu>
+} @else {
+  <fluent-tooltip anchor="account-button">Account</fluent-tooltip>
+}

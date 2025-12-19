@@ -1,0 +1,10 @@
+<div class="toast">
+  @if (type === 'inprogress') {
+    <div class="toast-spinner-wrapper">
+      <fluent-progress-ring class="toast-spinner"></fluent-progress-ring>
+    </div>
+  } @else {
+    <img class="toast-icon" [src]="type === 'success' ? 'success.svg' : 'error.svg'" />
+  }
+  <span class="toast-message">{{ message }}</span>
+</div>
