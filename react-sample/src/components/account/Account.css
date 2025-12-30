@@ -1,0 +1,22 @@
+.account {
+  display: block;
+  margin-right: 8px;
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.string-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lastAndFirst {
+  font-weight: 600;
+  font-size: 16px;
+}

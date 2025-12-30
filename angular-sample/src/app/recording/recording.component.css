@@ -1,0 +1,73 @@
+:host {
+  --color-recording-button-hover: #ebf3fc;
+  --color-svg-disabled: #959595;
+}
+
+.recording-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.recording-button {
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: var(--shadow4Brand);
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.recording-button:hover {
+  background-color: var(--color-recording-button-hover);
+}
+
+.recording-button svg {
+  fill: var(--color-primary);
+  width: 32px;
+  height: 32px;
+}
+
+.recording-button.active {
+  background-color: var(--color-primary);
+}
+
+.recording-button.active:hover {
+  background-color: var(--color-primary-selected);
+}
+
+.recording-button.active svg {
+  fill: white;
+}
+
+.recording-button:disabled {
+  background-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+.recording-button:disabled svg {
+  fill: var(--color-svg-disabled);
+}
+
+.recording-button-tooltip {
+  position: absolute;
+  top: -14px;
+}
+
+.dictation-processing-spinner {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 23px;
+  margin-left: -3px;
+}
+
+.dictation-processing-spinner::part(indeterminate-indicator-1) {
+  stroke-width: 1px;
+  stroke: var(--color-primary);
+}
+
+.recording-button.active > .dictation-processing-spinner::part(indeterminate-indicator-1) {
+  stroke: white;
+}

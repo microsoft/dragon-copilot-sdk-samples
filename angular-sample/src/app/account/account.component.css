@@ -1,0 +1,64 @@
+:host {
+  --color-avatar-text: #616161;
+  --color-avatar-background: #e6e6e6;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-avatar-text);
+  background-color: var(--color-avatar-background);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  user-select: none;
+  line-height: 32px;
+  cursor: pointer;
+}
+
+fluent-tooltip {
+  position: absolute;
+}
+
+.account-menu {
+  position: absolute;
+  top: 37px;
+  right: 8px;
+  color: var(--color-standard-text);
+  padding: 4px;
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.string-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lastAndFirst {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.username {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+fluent-menu-item {
+  margin: 0px;
+}
+
+fluent-menu-item::part(content) {
+  margin-left: 6px;
+}
