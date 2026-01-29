@@ -8,8 +8,9 @@ import { session } from "./session";
 import { Account } from "./components/account/Account";
 import { Button } from "@fluentui/react-components";
 import { UploadToaster } from "./components/upload-toaster/UploadToaster";
+import { CustomLexicalEditor } from "./components/text-control/CustomLexicalEditor";
 
-type ControlType = "native";
+type ControlType = "lexical" | "native";
 
 interface Control {
   id: string;
@@ -21,9 +22,9 @@ export function App() {
   const { isInitialized: isAuthInitialized, isAuthenticated } = useAuthContext();
 
   const [controls, setControls] = useState<Control[]>([
-    { id: "1", type: "native", conceptName: "Patient Name" },
-    { id: "2", type: "native", conceptName: session.fields[0] },
-    { id: "3", type: "native", conceptName: session.fields[1] },
+    { id: "1", type: "lexical", conceptName: "Patient Name" },
+    { id: "2", type: "lexical", conceptName: session.fields[0] },
+    { id: "3", type: "lexical", conceptName: session.fields[1] },
     { id: "4", type: "native", conceptName: session.fields[2] },
     { id: "5", type: "native", conceptName: session.fields[3] },
   ]);
@@ -33,7 +34,7 @@ export function App() {
   const addControl = () => {
     const newControl: Control = {
       id: Date.now().toString(),
-      type: "native",
+      type: nextFieldIndex === 0 ? "native" : "lexical",
       conceptName: nextFieldIndex === 0 ? "Patient Name" : session.fields[(nextFieldIndex - 1) % session.fields.length],
     };
 
@@ -47,7 +48,12 @@ export function App() {
   };
 
   const renderControl = (control: Control) => {
-    return <NativeTextInput id={control.id} conceptName={control.conceptName} />;
+    switch (control.type) {
+      case "lexical":
+        return <CustomLexicalEditor conceptName={control.conceptName} />;
+      case "native":
+        return <NativeTextInput id={control.id} conceptName={control.conceptName} />;
+    }
   };
 
   if (!isAuthInitialized) {

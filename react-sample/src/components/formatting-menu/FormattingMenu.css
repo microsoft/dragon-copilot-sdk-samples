@@ -1,0 +1,49 @@
+:root {
+  --color-secondary-button-border: #d1d1d1;
+  --color-secondary-hover: #f5f5f5;
+  --color-secondary-active: #ebebeb;
+}
+
+.formatting-menu {
+  position: absolute;
+  right: 0;
+  top: 4px;
+}
+
+.formatting-button {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  border: 1px solid var(--color-secondary-button-border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formatting-button svg {
+  min-width: 16px;
+}
+
+.formatting-button:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.active {
+  background-color: var(--color-secondary-active);
+}
+
+.editor-underline {
+  text-decoration: underline;
+}
+
+.editor-bold {
+  font-weight: bold;
+}
+
+.editor-italic {
+  font-style: italic;
+}

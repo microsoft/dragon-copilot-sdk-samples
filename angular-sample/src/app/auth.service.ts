@@ -6,13 +6,14 @@ import {
   PopupRequest,
 } from '@azure/msal-browser';
 import { environment } from '../app/environment';
-import type { AccessToken } from './dragon';
+import { dragon, type AccessToken } from './dragon';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private ehrClient: dragon.authentication.ehr.EhrAuthenticationClient;
   private msalApp: PublicClientApplication;
   account: AccountInfo | null = null;
   isAuthenticated = false;
@@ -35,6 +36,11 @@ export class AuthService {
         storeAuthStateInCookie: environment.msalConfig.cache.storeAuthStateInCookie,
       },
     });
+
+    this.ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
+      customerId: environment.ehrConfig.customerId,
+    });
+
     this.initialize();
   }
 
@@ -85,6 +91,10 @@ export class AuthService {
       account: activeAccount,
       forceRefresh: false,
     });
-    return { accessToken: response.accessToken };
+
+    // Exchange the Entra ID token via the EHR Authentication Client.
+    return this.ehrClient.acquireToken({
+      accessToken: response.accessToken,
+    });
   }
 }

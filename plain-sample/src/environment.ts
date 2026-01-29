@@ -1,10 +1,11 @@
 const defaultEnvironment = {
   region: "us", // Replace with your region code. e.g., 'us', 'ca', 'uk', etc.
   dragonConfig: {
-    applicationName: "react-sample",
+    applicationName: "plain-sample",
     partnerGuid: "YOUR_PARTNER_GUID", // Replace with your Partner GUID
     environmentId: "YOUR_ENVIRONMENT_ID", // Replace with your Environment ID
     speechLanguage: "en-US",
+    authMode: "entra",
   },
   msalConfig: {
     auth: {
@@ -24,7 +25,7 @@ const defaultEnvironment = {
 };
 
 function getEnvironmentFromLocalStorage(): typeof defaultEnvironment | undefined {
-  const storageKey = "react-sample-env";
+  const storageKey = "plain-sample-env";
 
   try {
     const value = localStorage.getItem(storageKey);

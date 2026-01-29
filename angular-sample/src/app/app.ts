@@ -15,7 +15,6 @@ import { SignIn } from './sign-in/sign-in.component';
 import { Recording } from './recording/recording.component';
 import { Toast } from './toast/toast.component';
 
-
 // Toast type alias kept minimal for sample clarity
 export type ToastType = 'inprogress' | 'success' | 'error';
 
@@ -97,9 +96,6 @@ export class App {
     if (this.initialized) {
       return; // idempotent
     }
-    const services = {
-      dragonMedicalServer: environment.dragonConfig.dragonMedicalServer,
-    };
 
     this.attachEventHandlers();
 
@@ -111,10 +107,9 @@ export class App {
         speechOptions: {
           language: environment.dragonConfig.speechLanguage,
         },
-        services: services,
+        services: environment.region,
         authentication: {
           acquireAccessToken: this.auth.acquireAccessToken.bind(this.auth),
-          scopeBehavior: 'serviceScoped',
         },
         isAmbientEnabled: true,
         isDictationEnabled: true,

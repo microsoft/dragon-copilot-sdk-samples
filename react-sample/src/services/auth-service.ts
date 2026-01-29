@@ -4,12 +4,15 @@ import {
   type PopupRequest,
   PublicClientApplication,
 } from "@azure/msal-browser";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../environment";
-import { dragon } from "./dragon-service";
 
+// Bind the runtime global from the CDN and cast to the typed namespace
+export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
 
 export class AuthService {
+  private ehrClient: dragon.authentication.ehr.EhrAuthenticationClient;
   private msalApp: PublicClientApplication;
   account: AccountInfo | null = null;
   isAuthenticated = false;
@@ -32,12 +35,17 @@ export class AuthService {
         storeAuthStateInCookie: environment.msalConfig.cache.storeAuthStateInCookie,
       },
     });
+
+    this.ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
+      customerId: environment.ehrConfig.customerId,
+    });
+
     this.initialize();
   }
 
   /** Performs MSAL initialization and restores existing account if present. */
   private async initialize() {
-    /* 
+    /*
         - If Webkit bridge is available, consider that the user is authenticated assuming native will handle authentication and will provide tokens
         - Publish initialization complete event
      */
@@ -86,7 +94,7 @@ export class AuthService {
   }
 
   /** Acquires an access token for the given scope using silent token acquisition. */
-  async acquireAccessToken(scope: string): Promise<dragon.AccessToken> {
+  async acquireAccessToken(scope: string): Promise<dragon.authentication.AccessToken> {
     // If Webkit bridge is available, acquire token from Webkit bridge
     if (this.hasWebKitBridgeAvailable) {
       const nativeToken = await this.getAccessTokenFromWebKitBridge(scope);
@@ -100,7 +108,11 @@ export class AuthService {
       account: activeAccount,
       forceRefresh: false,
     });
-    return { accessToken: response.accessToken };
+
+    // Exchange the Entra ID token via the EHR Authentication Client.
+    return this.ehrClient.acquireToken({
+      accessToken: response.accessToken,
+    });
   }
 
   /**

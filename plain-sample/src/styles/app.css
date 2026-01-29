@@ -1,0 +1,255 @@
+:root {
+  --color-primary: #0f6cbd;
+  --color-primary-selected: #0f548c;
+  --color-primary-text-disabled: #bdbdbd;
+  --color-secondary: #f0f0f0;
+  --color-secondary-button-text-disabled: #959595;
+  --color-standard-text: #242424;
+  --color-divider: #e0e0e0;
+  --color-stroke: #616161;
+  --color-progress-ring-background: #bad9fa;
+  --color-svg-disabled: #959595;
+  --color-disabled: #f0f0f0;
+  --color-placeholder-text: #707070;
+  --color-status-warning-broder-1: #fdcfb4;
+  --color-status-warning-background-1: #fff9f5;
+  --border-radius-medium: 4px;
+  --font-size-base-400: 16px;
+  --font-size-base-300: 14px;
+  --font-weight-semiBold: 600;
+  --stroke-width-thin: 1px;
+  --stroke-width-thick: 2px;
+  --shadow4Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow8: 0 0 2px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.14);
+  font-family: "Segoe UI", "Segoe UI Web (West European)", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+fluent-button {
+  min-width: 96px;
+}
+
+fluent-button::part(control) {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 0 12px;
+}
+
+fluent-button[disabled]::part(control) {
+  background-color: var(--color-disabled) !important;
+  color: var(--color-primary-text-disabled);
+  opacity: 1;
+}
+
+fluent-button.secondary::part(control) {
+  background-color: var(--color-secondary);
+  color: var(--color-standard-text);
+}
+
+fluent-button.secondary[disabled]::part(control) {
+  opacity: 1;
+  color: var(--color-secondary-button-text-disabled);
+}
+
+.sign-in-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+.sign-in-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.sign-in-app-logo {
+  width: 120px;
+  margin-bottom: 16px;
+}
+
+.sign-in-app-title {
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.microsoft-logo-wrapper {
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.recording-controls {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-top: 1px solid var(--color-divider);
+  z-index: 1000;
+  width: 100%;
+  padding: 20px 0;
+  gap: 16px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 96px); /* Account for recording controls */
+}
+
+#account-button {
+  margin-right: 8px;
+}
+
+.toolbar {
+  height: 42px;
+  width: 100%;
+  background-color: rgb(240, 240, 240);
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.app-title-logo {
+  width: 18px;
+}
+
+.app-title-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-standard-text);
+  margin-left: 8px;
+}
+
+.permission-banner {
+  justify-content: space-between;
+  background-color: var(--color-status-warning-background-1);
+  border: var(--stroke-width-thin) solid var(--color-status-warning-broder-1);
+  border-radius: var(--border-radius-medium);
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.permission-text {
+  display: flex;
+  align-items: center;
+}
+
+.permission-icon {
+  width: 22px;
+  margin-right: 6px;
+}
+
+.permission-title {
+  font-size: var(--font-size-base-300);
+  font-weight: var(--font-weight-semiBold);
+  padding: 0 8px 0 0;
+}
+
+.permission-button {
+  height: 24px;
+}
+
+.permission-button::part(control) {
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 3px 8px;
+}
+
+.button-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: white;
+  border-bottom: 1px solid var(--color-divider);
+  justify-content: left;
+  flex-shrink: 0;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.text-input-wrapper {
+  max-width: 900px;
+  width: 100%;
+  padding: 0 28px;
+  padding-top: 20px;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.input-section label {
+  font-weight: 500;
+  color: var(--color-standard-text);
+  font-size: var(--font-size-base-400);
+  height: 32px;
+  line-height: 32px;
+}
+
+.text-input,
+fluent-text-area::part(control) {
+  padding: 4px 8px;
+  border: 1px solid var(--color-stroke);
+  border-radius: var(--border-radius-medium);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+fluent-text-area::after {
+  display: none !important;
+}
+
+textarea.text-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.text-input:focus,
+fluent-text-area:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 var(--stroke-width-thick) var(--color-primary);
+  border-radius: var(--border-radius-medium);
+}
+
+.text-input::placeholder {
+  color: var(--color-placeholder-text);
+}

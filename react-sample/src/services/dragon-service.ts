@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../environment";
 import { AuthService } from "../services/auth-service";
 import { session } from "../session";
+import { lexicalControl } from "@microsoft/dragon-copilot-sdk-lexical-react";
 
 // Bind the runtime global from the CDN and cast to the typed namespace
 export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
@@ -34,7 +35,8 @@ export class DragonService {
   public onInitializedChanged$: Observable<boolean> = this.initialized$.asObservable();
 
   private ambientUploadStatus$ = new BehaviorSubject<AmbientUploadStatus | null>(null);
-  public onAmbientUploadStatusChanged$: Observable<AmbientUploadStatus | null> = this.ambientUploadStatus$.asObservable();
+  public onAmbientUploadStatusChanged$: Observable<AmbientUploadStatus | null> =
+    this.ambientUploadStatus$.asObservable();
 
   constructor(authService: AuthService) {
     this.#auth = authService;
@@ -55,23 +57,26 @@ export class DragonService {
 
     // Attach event handlers before initialization as events may be emitted during the initialization process.
     this.#attachEventHandlers();
-    
+
     try {
       await dragon.initialize({
         partnerGuid: environment.dragonConfig.partnerGuid,
+        environmentId: environment.dragonConfig.environmentId,
         applicationName: environment.dragonConfig.applicationName,
         speechOptions: {
           language: environment.dragonConfig.speechLanguage,
         },
-        services: {
-          dragonMedicalServer: environment.dragonConfig.dragonMedicalServer,
-        },
+        services: environment.region,
         authentication: {
           acquireAccessToken: this.#auth.acquireAccessToken.bind(this.#auth),
-          scopeBehavior: "serviceScoped",
         },
         isAmbientEnabled: true,
         isDictationEnabled: true,
+        customControlOptions: {
+          webCustomControlTypes: {
+            lexicalControl,
+          },
+        },
       });
 
       // If ambient mode is enabled, set any session data.
@@ -116,19 +121,13 @@ export class DragonService {
       this.volume$.next(event.detail.volume);
     });
 
-    dragon.recording.dictation.events.addEventListener(
-      "dictationProcessingStartedForElement",
-      () => {
-        this.processingDictation$.next(true);
-      },
-    );
+    dragon.recording.dictation.events.addEventListener("dictationProcessingStartedForElement", () => {
+      this.processingDictation$.next(true);
+    });
 
-    dragon.recording.dictation.events.addEventListener(
-      "dictationProcessingFinished",
-      () => {
-        this.processingDictation$.next(false);
-      },
-    );
+    dragon.recording.dictation.events.addEventListener("dictationProcessingFinished", () => {
+      this.processingDictation$.next(false);
+    });
 
     dragon.microphone.events.addEventListener("microphoneListChanged", (event) => {
       this.hasMicrophone$.next(event.detail.microphones.length > 0);

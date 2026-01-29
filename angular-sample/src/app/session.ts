@@ -1,5 +1,4 @@
-import type { Dragon } from './dragon';
-import { dragon } from './dragon';
+import { dragon, type AmbientSessionData } from './dragon';
 import { environment } from './environment';
 
 export const session = {
@@ -40,7 +39,7 @@ export const session = {
     draftAutoCreated: false,
     recordingList: [],
     partnerId: environment.dragonConfig.partnerGuid,
-  } as Dragon.recording.ambient.AmbientSessionData,
+  } as AmbientSessionData,
   fields: [
     'History',
     'Allergies',

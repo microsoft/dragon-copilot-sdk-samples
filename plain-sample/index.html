@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/dragon-copilot.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Microsoft Dragon Copilot SDK for JavaScript Sample</title>
+    <script
+      src="https://download.microsoft.com/download/fcb94e4a-b6ed-4905-9ea0-5186c44faaed/dragon-copilot-sdk-mainline.js"
+    ></script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="toast" class="toast">
+      <!-- Toast content will be injected here -->
+    </div>
+
+    <!-- Templates -->
+    <template id="sign-in-template">
+      <div class="sign-in-content">
+        <div class="sign-in-main">
+          <img src="dragon-copilot.svg" class="sign-in-app-logo" />
+          <label class="sign-in-app-title">Microsoft Dragon Copilot SDK for JavaScript Sample</label>
+          <fluent-button id="sign-in-button" appearance="accent">Sign in</fluent-button>
+        </div>
+        <div class="microsoft-logo-wrapper">
+          <img src="microsoft.svg" />
+        </div>
+      </div>
+    </template>
+
+    <template id="toast-text-template">
+      <div class="toast-text">
+        <div class="toast-title">Title</div>
+      </div>
+    </template>
+
+    <template id="toast-message-template">
+      <div class="toast-message">Message</div>
+    </template>
+
+    <template id="progress-toast-template">
+      <div class="toast-spinner-wrapper">
+        <fluent-progress-ring class="toast-spinner"></fluent-progress-ring>
+      </div>
+    </template>
+
+    <template id="success-toast-template">
+      <img class="toast-icon" src="success.svg" />
+    </template>
+
+    <template id="error-toast-template">
+      <img class="toast-icon" src="error.svg" />
+    </template>
+
+    <template id="main-content-template">
+      <div class="main-content">
+        <div class="toolbar">
+          <div class="app-title">
+            <img src="dragon-copilot.svg" class="app-title-logo" />
+            <span class="app-title-text">Microsoft Dragon Copilot SDK for JavaScript Sample</span>
+          </div>
+          <div id="account-button" class="avatar"></div>
+          <fluent-menu class="account-menu" style="display: none">
+            <div class="account-info">
+              <span id="avatar-initial" class="avatar"></span>
+              <div class="string-info">
+                <span id="last-and-first" class="last-and-first"></span>
+                <span id="user-account" class="username"></span>
+              </div>
+            </div>
+            <fluent-menu-item id="sign-out-button">Sign out</fluent-menu-item>
+          </fluent-menu>
+          <fluent-tooltip id="account-tooltip" anchor="account-button">Account</fluent-tooltip>
+        </div>
+
+        <div id="hid-permission-banner" class="permission-banner" style="display: none">
+          <div class="permission-text">
+            <img class="permission-icon" src="warning.svg" />
+            <span class="permission-title">Handheld microphone detected</span>
+            <span class="permission-message">To use microphone buttons, you must first enable them.</span>
+          </div>
+          <fluent-button id="hid-permission-button" class="permission-button" appearance="neutral">Enable buttons</fluent-button>
+        </div>
+
+        <div id="mic-permission-banner" class="permission-banner" style="display: none">
+          <div class="permission-text">
+            <img class="permission-icon" src="warning.svg" />
+            <span class="permission-title">Microphone access denied</span>
+            <span class="permission-message">Grant microphone access in your browser settings and refresh the app.</span>
+          </div>
+        </div>
+
+        <div class="button-bar">
+          <fluent-button id="add-control-button" appearance="accent">Add Control</fluent-button>
+          <fluent-button id="remove-control-button" class="secondary">Remove Control</fluent-button>
+        </div>
+
+        <div class="content">
+          <div id="dragon-container" class="text-input-wrapper" data-dragon-container>
+            <!-- Speech enabled controls will be injected here. Controls can be added or removed either before or after initialization. -->
+          </div>
+        </div>
+      </div>
+
+      <div class="recording-controls">
+        <div class="recording-button-wrapper">
+          <button id="toggle-dictation-button" class="recording-button" onmousedown="event.preventDefault()">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="grid-area: overlay">
+              <path
+                d="M5.5 10a.5.5 0 0 0-1 0 5.5 5.5 0 0 0 5 5.48v2.02a.5.5 0 0 0 1 0v-2.02c2.8-.26 5-2.61 5-5.48a.5.5 0 0 0-1 0 4.5 4.5 0 1 1-9 0Zm7.5 0a3 3 0 0 1-6 0V5a3 3 0 0 1 6 0v5Z"
+              ></path>
+            </svg>
+            <fluent-progress-ring class="dictation-processing-spinner" style="display: none"></fluent-progress-ring>
+          </button>
+          <fluent-tooltip
+            id="toggle-dictation-button-tooltip"
+            class="recording-button-tooltip"
+            anchor="toggle-dictation-button"
+          >
+            Start dictation
+          </fluent-tooltip>
+        </div>
+        <div class="recording-button-wrapper">
+          <button id="toggle-ambient-button" class="recording-button" onmousedown="event.preventDefault()">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 3c.38 0 .7.28.74.65l.01.1v16.5a.75.75 0 0 1-1.5.1V3.75c0-.41.34-.75.75-.75ZM8.25 6c.38 0 .7.28.75.65v10.6a.75.75 0 0 1-1.49.1V6.75c0-.41.33-.75.74-.75Zm7.5 0c.37 0 .69.28.74.65v10.6a.75.75 0 0 1-1.49.1V6.75c0-.41.33-.75.74-.75Zm-11 3c.38 0 .7.28.74.65l.01.1v4.5a.75.75 0 0 1-1.5.1v-4.6c0-.41.34-.75.75-.75Zm14.5 0c.38 0 .7.28.75.65v4.6a.75.75 0 0 1-1.5.1v-4.6c0-.41.34-.75.75-.75Z"
+              ></path>
+            </svg>
+          </button>
+          <fluent-tooltip
+            id="toggle-ambient-button-tooltip"
+            class="recording-button-tooltip"
+            anchor="toggle-ambient-button"
+          >
+            Start ambient recording
+          </fluent-tooltip>
+        </div>
+      </div>
+    </template>
+
+    <template id="field-template">
+      <div class="input-section">
+        <label for="history">History</label>
+        <input
+          id="history"
+          class="text-input"
+          data-dragon-concept-name="history"
+          placeholder="Dictate here..."
+          type="text"
+        ></input>
+      </div>
+    </template>
+
+    <template id="custom-field-template">
+      <div class="input-section">
+        <label for="history">History</label>
+        <fluent-text-area
+          id="history"
+          data-dragon-concept-name="history"
+          data-dragon-custom-control-type="customInput"
+          placeholder="Dictate here..."
+        ></fluent-text-area>
+      </div>
+    </template>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
