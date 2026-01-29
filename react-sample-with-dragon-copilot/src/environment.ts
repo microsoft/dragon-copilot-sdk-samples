@@ -1,10 +1,8 @@
 const defaultEnvironment = {
   dragonConfig: {
-    applicationName: "react-sample",
+    applicationName: "react-sample-with-dragon-copilot",
     partnerGuid: "YOUR_PARTNER_GUID", // Replace with your Partner GUID
-    daxProductId: "YOUR_DAX_PRODUCT_ID", // Replace with your DAX Product ID
     environmentId: "YOUR_ENVIRONMENT_ID", // Replace with your Environment ID
-    platformGuid: "YOUR_PLATFORM_GUID", // Replace with your Platform GUID
     dragonMedicalServer: {
       url: "https://dragon.example.com", // Replace with your Dragon Medical Server URL
       scope: "api://YOUR_SCOPE", // Token scope for Dragon Medical Server

@@ -83,15 +83,16 @@ export class DragonService {
     // Attach event handlers before initialization as events may be emitted during the initialization process.
     this.#attachEventHandlers();
     try {
+      // Important:
+      // To communicate with Dragon Copilot Web, the speech broker must be initialized first.
+      // Initialize speech broker before calling dragon.initialize
       DragonCopilotSDK.initSpeechBroker();
+
       await dragon.initialize({
         partnerGuid: environment.dragonConfig.partnerGuid,
-        daxProductId: environment.dragonConfig.daxProductId,
         applicationName: environment.dragonConfig.applicationName,
-        speechOptions: {
-          language: environment.dragonConfig.speechLanguage,
-        },
         services: {
+          // services config can be omitted if using default endpoints
           dragonMedicalServer: environment.dragonConfig.dragonMedicalServer,
           configService: environment.dragonConfig.configService,
           ehrIntegrationService: environment.dragonConfig.ehrIntegrationService,
@@ -100,10 +101,7 @@ export class DragonService {
           acquireAccessToken: this.#auth.acquireEhrAccessToken.bind(this.#auth),
           scopeBehavior: "ehrScoped",
         },
-        isAmbientEnabled: true,
-        isDictationEnabled: true,
         environmentId: environment.dragonConfig.environmentId,
-        platformGuid: environment.dragonConfig.platformGuid,
       });
 
       // If ambient mode is enabled, set any session data.
