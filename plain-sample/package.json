@@ -1,0 +1,20 @@
+{
+  "name": "plain-sample",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.2.2"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^4.26.2",
+    "@fluentui/web-components": "^2.6.1",
+    "@microsoft/dragon-copilot-sdk-types": "^1.0.0"
+  }
+}

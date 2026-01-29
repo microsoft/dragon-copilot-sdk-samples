@@ -1,10 +1,10 @@
-import * as dragon from "dragon-speech-sdk";
+import type { AmbientSessionData } from "./dragon";
 import { environment } from "./environment";
 
 export const session = {
   ambientData: {
-    correlationId: "3ea5c86b-2ccb-44da-946e-9418103a2c07",
-    clientApplicationStableId: "dragonCopilotSdkForJavascriptSample",
+    correlationId: crypto.randomUUID(),
+    clientApplicationStableId: "dragonCopilotSdkForJavaScriptSample",
     clientApplicationVersion: "1.0.0",
     localeInfo: {
       recordingLocales: [environment.dragonConfig.speechLanguage],
@@ -39,8 +39,9 @@ export const session = {
     draftAutoCreated: false,
     recordingList: [],
     partnerId: environment.dragonConfig.partnerGuid,
-  } as dragon.recording.ambient.AmbientSessionData,
+  } as AmbientSessionData,
   fields: [
+    "Patient Name",
     "History",
     "Allergies",
     "Medications",

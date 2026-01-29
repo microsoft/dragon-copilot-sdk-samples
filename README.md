@@ -6,7 +6,7 @@ The Dragon Copilot SDK enables you to add speech recognition functionality to yo
 
 Import CDN using script tag
 ```html
-<script src="https://download.microsoft.com/download/fcb94e4a-b6ed-4905-9ea0-5186c44faaed/dragon-copilot-sdk-mainline.js"></script>
+<script src="https://download.microsoft.com/download/9618a2a2-0d23-4587-aab6-2474fd8dd210/dragon-copilot-sdk-mainline.js"></script>
 ```
 
 Access dragon object and initialize

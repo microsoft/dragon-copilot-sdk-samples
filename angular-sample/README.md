@@ -13,6 +13,7 @@ A working example showing how to integrate Dragon Copilot SDK for JavaScript int
 
 - Dragon Medical Server URL, Partner GUID, and Environment ID
 - Microsoft Entra tenant ID and application (client) ID
+- EHR Integration Service URL, and customer ID
 
 ## Quick start
 
@@ -40,14 +41,11 @@ Open the developer console in your browser, go to the Console tab, and paste in 
 localStorage.setItem(
   'angular-sample-env',
   JSON.stringify({
+    region: 'us',
     dragonConfig: {
       applicationName: 'angular-sample',
       partnerGuid: 'YOUR_PARTNER_GUID',
       environmentId: 'YOUR_ENVIRONMENT_ID',
-      dragonMedicalServer: {
-        url: 'https://dragon.example.com',
-        scope: 'api://YOUR_SCOPE',
-      },
       speechLanguage: 'en-US',
       userId: 'test-user',
     },
@@ -62,6 +60,9 @@ localStorage.setItem(
         storeAuthStateInCookie: false,
       },
       scopes: ['user.read'],
+    },
+    ehrConfig: {
+      customerId: 'YOUR_CUSTOMER_ID',
     },
   }),
 );
@@ -86,7 +87,6 @@ The Dragon Copilot SDK should automatically initialize after sign-in.
 **If initialization fails:**
 
 - Check the browser console (F12) for error messages.
-- Common issue: Wrong `url` or `scope`.
 
 ### Step 2: Test recording
 
@@ -104,11 +104,12 @@ Select **Add control** to create more text fields dynamically.
 
 ### Authentication flow (`auth.service.ts`)
 
-The app uses Microsoft Authentication Library (MSAL) to:
+The app implements an EHR authentication flow by using the Microsoft Authentication Library (MSAL) alongside the Dragon Speech SDK to:
 
 1. Get your identity from Entra ID.
-2. Acquire access tokens for the Dragon Copilot server.
-3. Refresh tokens automatically when they expire.
+2. Acquire an access token for the EHR Integration Service.
+3. Exchange the Entra ID access token via the EhrAuthenticationClient.
+4. Refresh tokens automatically when they expire.
 
 ### Speech integration (`app.ts`)
 

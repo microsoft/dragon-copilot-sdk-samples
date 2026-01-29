@@ -1,12 +1,9 @@
 const defaultEnvironment = {
+  region: 'us', // Replace with your region code. e.g., 'us', 'ca', 'uk', etc.
   dragonConfig: {
     applicationName: 'angular-sample',
     partnerGuid: 'YOUR_PARTNER_GUID', // Replace with your Partner GUID
     environmentId: 'YOUR_ENVIRONMENT_ID', // Replace with your Environment ID
-    dragonMedicalServer: {
-      url: 'https://dragon.example.com', // Replace with your Dragon Medical Server URL
-      scope: 'api://YOUR_SCOPE', // Token scope for Dragon Medical Server
-    },
     speechLanguage: 'en-US',
   },
   msalConfig: {
@@ -20,6 +17,9 @@ const defaultEnvironment = {
       storeAuthStateInCookie: false,
     },
     scopes: ['user.read'], // Default scopes for login
+  },
+  ehrConfig: {
+    customerId: 'YOUR_CUSTOMER_ID', // Replace with your Customer ID
   },
 };
 

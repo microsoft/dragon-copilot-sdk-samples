@@ -1,9 +1,13 @@
 import { Spinner, Tooltip } from "@fluentui/react-components";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { useEffect, useState } from "react";
 import "../../App.css";
 import { useAuthContext } from "../../context/auth-context";
-import { getDragonService, type RecordingMode, dragon } from "../../services/dragon-service";
+import { getDragonService, type RecordingMode } from "../../services/dragon-service";
 import "./Recording.css";
+
+// Bind the runtime global from the CDN and cast to the typed namespace
+export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
 
 /**
  * Component to wrap Dragon Copilot SDK recording controls and recording status.
