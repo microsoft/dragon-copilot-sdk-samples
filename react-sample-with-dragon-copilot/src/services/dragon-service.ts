@@ -98,7 +98,7 @@ export class DragonService {
           ehrIntegrationService: environment.dragonConfig.ehrIntegrationService,
         },
         authentication: {
-          acquireAccessToken: this.#auth.acquireEhrAccessToken.bind(this.#auth),
+          acquireAccessToken: this.#auth.acquireAccessToken.bind(this.#auth),
           scopeBehavior: "ehrScoped",
         },
         environmentId: environment.dragonConfig.environmentId,

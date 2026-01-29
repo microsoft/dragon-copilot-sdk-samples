@@ -4,21 +4,23 @@ import {
   type PopupRequest,
   PublicClientApplication,
 } from "@azure/msal-browser";
+import type * as Dragon from "@microsoft/dragon-copilot-sdk-types";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../environment";
-import { dragon } from "./dragon-service";
+
+// Bind the runtime global from the CDN and cast to the typed namespace
+export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
 
 export class AuthService {
+  private ehrClient: dragon.authentication.ehr.EhrAuthenticationClient;
   private msalApp: PublicClientApplication;
-  private ehrAuthClient: dragon.authentication.ehr.EhrAuthenticationClient;
   account: AccountInfo | null = null;
   isAuthenticated = false;
   hasWebKitBridgeAvailable = false;
 
   // Initialization state observables
   private initializationComplete$ = new BehaviorSubject<boolean>(false);
-  public onInitializationComplete$: Observable<boolean> =
-    this.initializationComplete$.asObservable();
+  public onInitializationComplete$: Observable<boolean> = this.initializationComplete$.asObservable();
 
   /** Creates the authentication service and initializes MSAL + cached account state. */
   constructor() {
@@ -30,19 +32,20 @@ export class AuthService {
       },
       cache: {
         cacheLocation: environment.msalConfig.cache.cacheLocation,
-        storeAuthStateInCookie:
-          environment.msalConfig.cache.storeAuthStateInCookie,
+        storeAuthStateInCookie: environment.msalConfig.cache.storeAuthStateInCookie,
       },
     });
-    this.ehrAuthClient = new dragon.authentication.ehr.EhrAuthenticationClient({
+
+    this.ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
       customerId: environment.dragonConfig.environmentId,
     });
+
     this.initialize();
   }
 
   /** Performs MSAL initialization and restores existing account if present. */
   private async initialize() {
-    /* 
+    /*
         - If Webkit bridge is available, consider that the user is authenticated assuming native will handle authentication and will provide tokens
         - Publish initialization complete event
      */
@@ -67,11 +70,8 @@ export class AuthService {
   /** Interactive popup signin; updates reactive auth signals on success. */
   async signinPopup() {
     try {
-      const popupRequest: PopupRequest = {
-        scopes: environment.msalConfig.scopes,
-      };
-      const authResult: AuthenticationResult =
-        await this.msalApp.loginPopup(popupRequest);
+      const popupRequest: PopupRequest = { scopes: environment.msalConfig.scopes };
+      const authResult: AuthenticationResult = await this.msalApp.loginPopup(popupRequest);
       this.account = authResult.account;
       this.isAuthenticated = true;
     } catch (error) {
@@ -94,9 +94,7 @@ export class AuthService {
   }
 
   /** Acquires an access token for the given scope using silent token acquisition. */
-  async acquireAccessToken(
-    scope: string,
-  ): Promise<dragon.authentication.AccessToken> {
+  async acquireAccessToken(scope: string): Promise<dragon.authentication.AccessToken> {
     // If Webkit bridge is available, acquire token from Webkit bridge
     if (this.hasWebKitBridgeAvailable) {
       const nativeToken = await this.getAccessTokenFromWebKitBridge(scope);
@@ -110,25 +108,11 @@ export class AuthService {
       account: activeAccount,
       forceRefresh: false,
     });
-    return { accessToken: response.accessToken };
-  }
 
-  /** Acquires an EHR access token for the given scope by exchanging a partner token.
-   * This is needed for scopeBehavior = ehrScoped authentication in the Dragon Copilot SDK.
-   */
-
-  async acquireEhrAccessToken(scope: string) {
-    try {
-      const { accessToken } = await this.acquireAccessToken(scope);
-      // Exchange for EHR access token
-      const ehrTokenResult = await this.ehrAuthClient.acquireToken({
-        accessToken,
-      });
-      return { accessToken: ehrTokenResult.accessToken };
-    } catch (error) {
-      console.error("EHR token acquisition failed:", error);
-      throw error;
-    }
+    // Exchange the Entra ID token via the EHR Authentication Client.
+    return this.ehrClient.acquireToken({
+      accessToken: response.accessToken,
+    });
   }
 
   /**
@@ -153,12 +137,8 @@ export class AuthService {
       return false;
     }
 
-    const isWebKitBridgeAvailable =
-      await webkitMessageHandlers.isWebKitBridgeAvailable.postMessage(null);
-    console.log(
-      "Webkit bridge isWebKitBridgeAvailable = ",
-      isWebKitBridgeAvailable,
-    );
+    const isWebKitBridgeAvailable = await webkitMessageHandlers.isWebKitBridgeAvailable.postMessage(null);
+    console.log("Webkit bridge isWebKitBridgeAvailable = ", isWebKitBridgeAvailable);
     return isWebKitBridgeAvailable;
   }
 
@@ -177,13 +157,9 @@ export class AuthService {
    *
    * @private
    */
-  private async getAccessTokenFromWebKitBridge(
-    scope?: string,
-  ): Promise<string> {
+  private async getAccessTokenFromWebKitBridge(scope?: string): Promise<string> {
     console.log("Acquiring token from WebKitBridge for scope:", scope);
-    const token = await (
-      window as any
-    ).webkit.messageHandlers.getNativeToken.postMessage(scope);
+    const token = await (window as any).webkit.messageHandlers.getNativeToken.postMessage(scope);
     return token;
   }
 }
