@@ -1,6 +1,6 @@
 const defaultEnvironment = {
   dragonConfig: {
-    applicationName: "react-sample-with-dragon-copilot",
+    applicationName: "plain-sample",
     partnerGuid: "YOUR_PARTNER_GUID", // Replace with your Partner GUID
     environmentId: "YOUR_ENVIRONMENT_ID", // Replace with your Environment ID
     dragonMedicalServer: {

@@ -37,7 +37,7 @@ export class AuthService {
     });
 
     this.ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
-      customerId: environment.ehrConfig.customerId,
+      customerId: environment.dragonConfig.environmentId,
     });
 
     this.initialize();
