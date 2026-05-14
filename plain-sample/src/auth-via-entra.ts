@@ -5,13 +5,11 @@ import {
   type PopupRequest,
 } from "@azure/msal-browser";
 import type { Auth, AuthAccountInfo } from "./auth";
-import { dragon, type EhrAuthenticationClient } from "./dragon";
+import { dragon } from "./dragon";
 import { environment } from "./environment";
 
-export class AuthEhrViaEntra implements Auth {
+export class AuthViaEntra implements Auth {
   #msalApp: PublicClientApplication;
-
-  #ehrClient: EhrAuthenticationClient;
 
   #account: AccountInfo | null = null;
 
@@ -31,14 +29,10 @@ export class AuthEhrViaEntra implements Auth {
         storeAuthStateInCookie: environment.msalConfig.cache.storeAuthStateInCookie,
       },
     });
-
-    this.#ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
-      customerId: environment.ehrConfig.customerId,
-    });
   }
 
   static async create(): Promise<Auth> {
-    const instance = new AuthEhrViaEntra();
+    const instance = new AuthViaEntra();
     await instance.#initialize();
     return instance;
   }
@@ -105,13 +99,13 @@ export class AuthEhrViaEntra implements Auth {
     const response = await this.#msalApp.acquireTokenSilent({
       scopes: [scope],
       account: activeAccount,
-      forceRefresh: false,
+      forceRefresh: true,
     });
 
-    // Exchange the Entra ID token via the EHR Authentication Client.
-    return this.#ehrClient.acquireToken({
+    return {
       accessToken: response.accessToken,
-    });
+      expiresOn: response.expiresOn ?? undefined,
+    };
   }
 
   /** Performs MSAL initialization and restores existing account if present. */

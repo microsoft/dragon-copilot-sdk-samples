@@ -8,7 +8,7 @@ import {
   provideFluentDesignSystem,
 } from "@fluentui/web-components";
 import { App } from "./app";
-import { AuthEhrViaEntra } from "./auth-ehr-via-entra";
+import { AuthViaEntra } from "./auth-via-entra";
 import "./styles/app.css";
 import "./styles/recording.css";
 import "./styles/account.css";
@@ -23,7 +23,7 @@ provideFluentDesignSystem().register(
   fluentTooltip(),
 );
 
-const auth = await AuthEhrViaEntra.create();
+const auth = await AuthViaEntra.create();
 const app = new App(auth);
 
 // Initialize the app
