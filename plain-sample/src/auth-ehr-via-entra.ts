@@ -33,7 +33,7 @@ export class AuthEhrViaEntra implements Auth {
     });
 
     this.#ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
-      customerId: environment.ehrConfig.customerId,
+      customerId: environment.dragonConfig.environmentId,
     });
   }
 
