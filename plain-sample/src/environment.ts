@@ -17,6 +17,9 @@ const defaultEnvironment = {
     },
     speechLanguage: "en-US",
   },
+  ehrConfig: {
+    customerId: "YOUR_CUSTOMER_ID", // Replace with your EHR Customer ID
+  },
   msalConfig: {
     auth: {
       clientId: "YOUR_CLIENT_ID", // Replace with your Azure AD app client ID
