@@ -56,20 +56,18 @@ export class App {
 
       await dragon.initialize({
         partnerGuid: environment.dragonConfig.partnerGuid,
-        environmentId: environment.dragonConfig.environmentId,
         applicationName: environment.dragonConfig.applicationName,
-        speechOptions: {
-          language: environment.dragonConfig.speechLanguage,
+        services: {
+          // services config can be omitted if using default endpoints
+          dragonMedicalServer: environment.dragonConfig.dragonMedicalServer,
+          configService: environment.dragonConfig.configService,
+          ehrIntegrationService: environment.dragonConfig.ehrIntegrationService,
         },
-        services: environment.region,
         authentication: {
           acquireAccessToken: this.#auth.acquireAccessToken.bind(this.#auth),
+          scopeBehavior: "ehrScoped",
         },
-        isAmbientEnabled: true,
-        isDictationEnabled: true,
-        customControlOptions: {
-          webCustomControlTypes: customControls,
-        },
+        environmentId: environment.dragonConfig.environmentId,
       });
 
       console.log("SDK initialized successfully");

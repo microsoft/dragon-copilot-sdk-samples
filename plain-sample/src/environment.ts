@@ -1,11 +1,24 @@
 const defaultEnvironment = {
-  region: "us", // Replace with your region code. e.g., 'us', 'ca', 'uk', etc.
   dragonConfig: {
     applicationName: "plain-sample",
     partnerGuid: "YOUR_PARTNER_GUID", // Replace with your Partner GUID
     environmentId: "YOUR_ENVIRONMENT_ID", // Replace with your Environment ID
+    dragonMedicalServer: {
+      url: "https://dragon.example.com", // Replace with your Dragon Medical Server URL
+      scope: "api://YOUR_SCOPE", // Token scope for Dragon Medical Server
+    },
+    configService: {
+      url: "https://dragon.example.com/configservice",
+      scope: "api://YOUR_SCOPE",
+    },
+    ehrIntegrationService: {
+      url: "https://dragon.example.com/ehr-integration",
+      scope: "api://YOUR_SCOPE",
+    },
     speechLanguage: "en-US",
-    authMode: "entra",
+  },
+  ehrConfig: {
+    customerId: "YOUR_CUSTOMER_ID", // Replace with your EHR Customer ID
   },
   msalConfig: {
     auth: {
@@ -19,10 +32,8 @@ const defaultEnvironment = {
     },
     scopes: ["user.read"], // Default scopes for login
   },
-  ehrConfig: {
-    customerId: "YOUR_CUSTOMER_ID", // Replace with your Customer ID
-  },
 };
+
 
 function getEnvironmentFromLocalStorage(): typeof defaultEnvironment | undefined {
   const storageKey = "plain-sample-env";

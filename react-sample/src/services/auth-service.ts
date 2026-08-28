@@ -12,7 +12,6 @@ import { environment } from "../environment";
 export const dragon = (globalThis as any).DragonCopilotSDK?.dragon as typeof Dragon;
 
 export class AuthService {
-  private ehrClient: dragon.authentication.ehr.EhrAuthenticationClient;
   private msalApp: PublicClientApplication;
   account: AccountInfo | null = null;
   isAuthenticated = false;
@@ -34,10 +33,6 @@ export class AuthService {
         cacheLocation: environment.msalConfig.cache.cacheLocation,
         storeAuthStateInCookie: environment.msalConfig.cache.storeAuthStateInCookie,
       },
-    });
-
-    this.ehrClient = new dragon.authentication.ehr.EhrAuthenticationClient({
-      customerId: environment.ehrConfig.customerId,
     });
 
     this.initialize();
@@ -106,13 +101,13 @@ export class AuthService {
     const response = await this.msalApp.acquireTokenSilent({
       scopes: [scope],
       account: activeAccount,
-      forceRefresh: false,
+      forceRefresh: true,
     });
 
-    // Exchange the Entra ID token via the EHR Authentication Client.
-    return this.ehrClient.acquireToken({
+    return {
       accessToken: response.accessToken,
-    });
+      expiresOn: response.expiresOn ?? undefined,
+    };
   }
 
   /**
