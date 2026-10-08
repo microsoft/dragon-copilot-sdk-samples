@@ -2,6 +2,16 @@
 
 The Dragon Copilot SDK enables you to add speech recognition functionality to your web browser applications.
 
+## Mobile keyboard bridge
+
+The [`mobile-keyboard-sample`](./mobile-keyboard-sample/README.md) folder
+contains a platform-neutral JavaScript bridge for an iOS/Android alternate
+keyboard. It keeps a hidden Dragon-enabled textarea as the dictation target and
+forwards partial text to a native keyboard's composing-text API over a
+WebView message protocol. Native keyboard extensions should host this bridge
+through a companion app rather than assuming the browser SDK can run directly
+inside the extension.
+
 ## Installation & Usage
 
 Import CDN using script tag
